@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".NewsDetailsActivity">
+
+    <ImageView
+        android:id="@+id/photo"
+        style="@style/ImageViewStyle"
+        android:contentDescription="hello world" />
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/ProductDescriptionStyle" />
+
+    <TextView
+        android:id="@+id/author"
+        style="@style/ProductDescriptionStyle" />
+
+
+
+    <TextView
+        android:id="@+id/publishedAt"
+        style="@style/ProductDescriptionStyle" />
+
+    <TextView
+        android:id="@+id/content"
+        style="@style/ProductDescriptionStyle" />
+
+
+
+
+</LinearLayout>
