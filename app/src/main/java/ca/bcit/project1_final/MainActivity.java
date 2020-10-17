@@ -1,3 +1,12 @@
+/**
+ * COMP 3717, Fall 2020, Assignment 1
+ *
+ * @author Jay Rim A01174716 Set A
+ * @author Adam
+ * @version 2020
+ */
+
+
 package ca.bcit.project1_final;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import static ca.bcit.project1_final.News.newsDetails;
+
 
 public class MainActivity extends AppCompatActivity {
 

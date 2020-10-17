@@ -20,6 +20,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import static ca.bcit.project1_final.News.newsDetails;
 
@@ -28,16 +30,12 @@ public class NewsListActivity extends AppCompatActivity {
     private String TAG = MainActivity.class.getSimpleName();
     private ListView lv;
     private ArrayList<HashMap<String, String>> news = new ArrayList<>();
-
     private String userInput;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newlistactivity_layout);
-
 
         new GetContacts().execute();
         Intent intent = getIntent();
@@ -54,13 +52,8 @@ public class NewsListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
-    /**
-     * Async task class to get json by making HTTP call
-     */
     private class GetContacts extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -71,11 +64,17 @@ public class NewsListActivity extends AppCompatActivity {
         protected Void doInBackground(Void... arg0) {
             HttpHandler sh = new HttpHandler();
             String API_KEY = "dca6881472de4de5a8752112adabcd9b";
+
+            // get current date in 1111-11-11 format
+            // then -1 week
+            // assignment documents mentions:  starting date which should always be one week behind
+            LocalDate currentDate = LocalDate.now();
+            LocalDate weekFromNow = currentDate.minus(1, ChronoUnit.WEEKS);
+//            System.out.println(weekFromNow);
+
             String SERVICE_URL = "https://newsapi.org/v2/everything?q=" + userInput
-                    + "&from=2020-09-15&sortBy=publishedAt&apiKey=" + API_KEY;
-            System.out.println(SERVICE_URL);
-
-
+                    + "&from=" + weekFromNow.toString() + "&sortBy=publishedAt&apiKey=" + API_KEY;
+//            System.out.println(SERVICE_URL);
 
 
             String jsonStr = sh.makeServiceCall(SERVICE_URL);
@@ -85,9 +84,8 @@ public class NewsListActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
-                    // Getting JSON Array node
                     JSONArray articles = jsonObj.getJSONArray("articles");
-                    System.out.println(articles);
+//                    System.out.println(articles);
 
                     for (int i = 0; i < articles.length(); i++) {
                         JSONObject c = articles.getJSONObject(i);
@@ -99,19 +97,13 @@ public class NewsListActivity extends AppCompatActivity {
                         String publishedAt = c.getString("publishedAt");
                         String content = c.getString("content");
 
-
-
-                        // tmp hash map for single contact
                         HashMap<String, String> mainMenu = new HashMap<>();
 
-                        // adding each child node to HashMap key => value
                         mainMenu.put("author", author);
                         mainMenu.put("title", title);
                         newsDetails.add(new News(author, title, description,
                                 url, urlToImage,
                                 publishedAt, content));
-
-                        // adding contact to contact list
                         news.add(mainMenu);
                     }
                 } catch (final JSONException e) {
@@ -138,28 +130,17 @@ public class NewsListActivity extends AppCompatActivity {
                     }
                 });
             }
-
             return null;
         }
-
-
-
-
-
 
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-
-
             ListAdapter adapter = new SimpleAdapter(NewsListActivity.this, news,
                     R.layout.list_row, new String[]{ "author","title"},
                     new int[]{R.id.title, R.id.author});
-
-            // Attach the adapter to a ListView
             lv.setAdapter(adapter);
-
         }
 
 

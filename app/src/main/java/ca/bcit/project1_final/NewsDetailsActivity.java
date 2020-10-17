@@ -15,13 +15,16 @@ public class NewsDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_details);
 
-        // get the country from the intent
         int articleIndex = (Integer) getIntent().getExtras().get("index");
         News news = News.newsDetails.get(articleIndex);
 
-//        // Populate the country image
+        ImageView imgOnePhoto = findViewById(R.id.photo);
+        if (news.getUrlToImage() != null) {
+            new ImageDownloaderTask(imgOnePhoto).execute(news.getUrlToImage());
+        }
+
 //        ImageView photo = findViewById(R.id.photo);
-//        photo.setImageResource(News.getImageResourceId());
+//        photo.setImageResource(news.getUrlToImage());
 //
 //                ImageView imgOnePhoto = convertView.findViewById(R.id.thumbImage);
 //        if (news.getUrlToImage() != null) {
